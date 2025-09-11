@@ -1,35 +1,35 @@
-# CCF 2025 HIP Programming Contest
+# CCF 2025 HIP 编程竞赛
 
-There are three challenges in this contest:
+本次竞赛包含三道挑战题目：
 
-1. **Prefix Sum**  
-2. **Softmax**  
-3. **APSP (All-Pairs Shortest Path)**  
-
----
-
-## Description
-Each challenge comes with its own description, which is located in the `README.md` file inside the respective challenge directory.
+1. **前缀和 (Prefix Sum)**  
+2. **Softmax 函数计算**  
+3. **全点对最短路径 (APSP - All-Pairs Shortest Path)**  
 
 ---
 
-## Submission
-- Create a directory under your **$HOME** path named `hip_programming_contest` .
-- Place your solutions in this directory.  
-- After the competition ends, we will enter your directory to evaluate your submission and determine your grade.
+## 题目描述
+每个挑战题目都有自己的详细描述，位于相应挑战目录中的 `README.md` 文件内。
 
-## Grading
-- Each problem will be graded based on **execution time performance**.  
-- Rankings are determined by execution time, and scores are assigned according to the rank.
+---
 
-### Problem 1 & 2 (Prefix Sum, Softmax)
-- 1st place: **100 points**  
-- 2nd place: **90 points**  
-- 3rd place: **80 points**  
-- … decreasing by 10 points per rank until the 10th place.  
+## 提交方式
+- 在您的 **$HOME** 路径下创建名为 `hip_programming_contest` 的目录
+- 将您的解决方案放置在此目录中  
+- 竞赛结束后，我们将进入您的目录评估提交的作品并确定您的成绩
 
-### Problem 3 (APSP)
-- 1st place: **250 points**  
-- 2nd place: **225 points**  
-- 3rd place: **25 points**  
-- … decreasing by 25 points per rank until the 10th place.
+## 评分标准
+- 每道题目将基于 **执行时间性能** 进行评分  
+- 排名根据执行时间确定，分数按排名分配
+
+### 题目1和题目2（前缀和、Softmax）
+- 第1名：**100分**  
+- 第2名：**90分**  
+- 第3名：**80分**  
+- …… 每降一名减少10分，直到第10名  
+
+### 题目3（全点对最短路径）
+- 第1名：**250分**  
+- 第2名：**225分**  
+- 第3名：**200分**  
+- …… 每降一名减少25分，直到第10名

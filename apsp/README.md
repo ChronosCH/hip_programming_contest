@@ -1,168 +1,168 @@
-# All-Pairs Shortest Path (APSP)
+# 全点对最短路径 (APSP - All-Pairs Shortest Path)
 
-## Description
+## 题目描述
 
-Implement an efficient **all-pairs shortest path (APSP)** solver on GPU.
+在GPU上实现高效的**全点对最短路径(APSP)**求解器。
 
-Given a directed, weighted graph with **non-negative** edge weights, compute the shortest-path distance from every vertex $i$ to every vertex $j$.
+给定一个有向加权图，边权为**非负数**，计算从每个顶点$i$到每个顶点$j$的最短路径距离。
 
-## Requirements
+## 要求
 
-* You may choose **any** algorithm to solve APSP.
-* You must implement the shortest-path algorithm **yourself** (no external libraries).
-* Only a **single-GPU** implementation is allowed (no multi-GPU).
+* 您可以选择**任何**算法来解决APSP问题
+* 您必须**自己实现**最短路径算法（不允许使用外部库）
+* 只允许**单GPU**实现（不允许多GPU）
 
-## Code Structure
+## 代码结构
 
 ```
 .
-├── main.cpp              # GPU parallel implementation
-├── main.h                # Header file for GPU version
-├── main_serial.cpp       # CPU serial implementation
-├── main_serial.h         # Header file for serial version
-├── Makefile              # Build configuration
-├── README.md             # This file
-├── PERFORMANCE_ANALYSIS.md  # Detailed performance analysis
-├── performance_comparison.sh    # Comprehensive performance test
-├── simple_performance_test.sh   # Quick performance test
-└── testcases             # Sample testcases for local verification
+├── main.cpp              # GPU并行实现
+├── main.h                # GPU版本头文件
+├── main_serial.cpp       # CPU串行实现
+├── main_serial.h         # 串行版本头文件
+├── Makefile              # 构建配置
+├── README.md             # 本文件
+├── PERFORMANCE_ANALYSIS.md  # 详细性能分析
+├── performance_comparison.sh    # 综合性能测试
+├── simple_performance_test.sh   # 快速性能测试
+└── testcases             # 本地验证用样例测试用例
 ```
 
-## Build & Run
+## 构建和运行
 
-### Build
+### 构建
 
 ```bash
-make                    # Build both GPU and serial versions
-make apsp              # Build GPU version only
-make apsp_serial       # Build serial version only
+make                    # 构建GPU和串行版本
+make apsp              # 仅构建GPU版本
+make apsp_serial       # 仅构建串行版本
 ```
 
-Produces executables: `apsp` (GPU) and `apsp_serial` (CPU).
+生成可执行文件：`apsp`（GPU）和 `apsp_serial`（CPU）。
 
-### Run
+### 运行
 
 ```bash
-./apsp input.txt        # Run GPU version
-./apsp_serial input.txt # Run serial version
+./apsp input.txt        # 运行GPU版本
+./apsp_serial input.txt # 运行串行版本
 ```
 
-### Performance Comparison
+### 性能对比
 
 ```bash
-./simple_performance_test.sh     # Quick performance comparison
-./performance_comparison.sh      # Comprehensive analysis (slower)
+./simple_performance_test.sh     # 快速性能对比
+./performance_comparison.sh      # 综合分析（较慢）
 ```
 
 ---
 
-## Implementation Comparison
+## 实现对比
 
-This project includes both **serial CPU** and **parallel GPU** implementations of the Floyd-Warshall algorithm:
+本项目包含Floyd-Warshall算法的**串行CPU**和**并行GPU**两种实现：
 
-### Serial Implementation (`main_serial.cpp`)
-- **Algorithm**: Classic Floyd-Warshall with triple nested loops
-- **Complexity**: O(V³) time, O(V²) space
-- **Advantages**:
-  - Zero GPU initialization overhead
-  - Better for small graphs (< 1000 vertices)
-  - Simple and easy to debug
-- **Compiler**: g++ with -O2 optimization
+### 串行实现 (`main_serial.cpp`)
+- **算法**：经典Floyd-Warshall三重嵌套循环
+- **复杂度**：O(V³)时间，O(V²)空间
+- **优势**：
+  - 零GPU初始化开销
+  - 适合小图（< 1000个顶点）
+  - 简单易调试
+- **编译器**：g++使用-O2优化
 
-### GPU Implementation (`main.cpp`)
-- **Algorithm**: Parallel Floyd-Warshall using HIP
-- **Platform**: AMD ROCm + HIP programming model
-- **Advantages**:
-  - Massive parallelization for large graphs
-  - 16x speedup on 4000-vertex graphs
-  - Efficient for dense, large-scale problems
-- **Compiler**: hipcc with -O2 optimization
+### GPU实现 (`main.cpp`)
+- **算法**：使用HIP的并行Floyd-Warshall
+- **平台**：AMD ROCm + HIP编程模型
+- **优势**：
+  - 大图的大规模并行化
+  - 4000顶点图上16倍加速
+  - 对密集大规模问题高效
+- **编译器**：hipcc使用-O2优化
 
-### Performance Summary
-| Graph Size | Best Implementation | Speedup |
+### 性能总结
+| 图大小 | 最佳实现 | 加速比 |
 |------------|-------------------|---------|
-| < 100 vertices | Serial CPU | 1x (GPU overhead dominates) |
-| 100-1000 vertices | Comparable | ~1x |
-| > 1000 vertices | Parallel GPU | Up to 16x |
+| < 100个顶点 | 串行CPU | 1x（GPU开销占主导） |
+| 100-1000个顶点 | 相当 | ~1x |
+| > 1000个顶点 | 并行GPU | 高达16x |
 
-See `PERFORMANCE_ANALYSIS.md` for detailed performance analysis.
+详细性能分析请参见`PERFORMANCE_ANALYSIS.md`。
 
 ---
 
-## Testcases
+## 测试用例
 
-The `testcases/` folder contains **10** sample input files and corresponding outputs.
+`testcases/`文件夹包含**10个**样例输入文件和对应的输出。
 
-Run a sample as:
+运行样例：
 
 ```bash
 ./apsp testcases/1.in
 ```
 
-Hidden testcases will be used during grading; ensure your solution handles edge cases and large graphs.
+评分时将使用隐藏测试用例；请确保您的解决方案能处理边界情况和大图。
 
 ---
 
-### Input Format
+### 输入格式
 
-* The graph is directed with non-negative edge weights.
-* All values are **32-bit integers** (use `int` in C/C++).
-* The first two integers are the number of vertices and edges: $(V, E)$.
-* Then follow $E$ edges; each edge is given by three integers:
+* 图是有向的，边权为非负数
+* 所有值都是**32位整数**（在C/C++中使用`int`）
+* 前两个整数是顶点数和边数：$(V, E)$
+* 然后是$E$条边；每条边由三个整数给出：
 
 $$
 \mathrm{src}_i\ \ \mathrm{dst}_i\ \ \mathrm{w}_i \quad\text{for } i=0,1,\dots,E-1 .
 $$
 
-* Vertex IDs are $0,1,\dots,V-1$.
+* 顶点ID为$0,1,\dots,V-1$
 
-**Example**
+**示例**
 
 ```
 2 1
 0 1 5
 ```
 
-**Constraints**
+**约束条件**
 
 * $2 \le V \le 40{,}000$
 * $0 \le E \le V \times (V-1)$
 * $0 \le \mathrm{src}_i, \mathrm{dst}_i < V$
-* $\mathrm{src}_i \ne \mathrm{dst}_i$ (no self-loops in the input)
-* If $\mathrm{src}_i=\mathrm{src}_j$ then $\mathrm{dst}_i \ne \mathrm{dst}_j$ (no duplicate edges with the same $\mathrm{src}$ and $\mathrm{dst}$)
+* $\mathrm{src}_i \ne \mathrm{dst}_i$（输入中没有自环）
+* 如果$\mathrm{src}_i=\mathrm{src}_j$则$\mathrm{dst}_i \ne \mathrm{dst}_j$（相同源和目标的边不重复）
 * $0 \le \mathrm{w}_i \le 1000$
 
 ---
 
-### Output Format
+### 输出格式
 
-You must print $V^2$ integers to **standard output** representing the distance matrix $D$ where:
+您必须向**标准输出**打印$V^2$个整数，表示距离矩阵$D$，其中：
 
 $$
 D[i,j] = d(i,j)
 $$
 
-is the shortest-path distance from vertex $i$ to vertex $j$.
+是从顶点$i$到顶点$j$的最短路径距离。
 
-* Distances must be printed in **row-major order by source vertex**:
+* 距离必须按**源顶点的行优先顺序**打印：
 
 $d(0,0),\, d(0,1),\, \ldots,\, d(0,V-1);\quad
 d(1,0),\, \ldots,\, d(1,V-1);\quad \ldots;\quad
 d(V-1,0),\, \ldots,\, d(V-1,V-1).$
 
-* Diagonal entries must satisfy:
+* 对角线条目必须满足：
 
 $$
 d(i,i) = 0 \quad \forall\, i .
 $$
 
-* If there is **no path** from $i \to j$, output:
+* 如果从$i \to j$**没有路径**，输出：
 
 $$
 d(i,j) = 2^{30} - 1 = 1073741823 .
 $$
 
-**Example**
+**示例**
 
 ```
 0 5
@@ -171,17 +171,17 @@ $$
 
 ---
 
-## Submission
+## 提交
 
-Your submitted folder must named `apsp`:
+您提交的文件夹必须命名为`apsp`：
 
-Contain all required source files (`main.cpp`, `main.h`, `Makefile`) so that it can be built directly with:
+包含所有必需的源文件（`main.cpp`, `main.h`, `Makefile`），以便可以直接用以下命令构建：
 
 ```bash
 make
 ```
 
-The grader will test with:
+评分器将使用以下命令测试：
 
 ```bash
 cd $HOME/hip_programming_contest/apsp
@@ -189,25 +189,25 @@ make
 ./apsp <hidden_testcase.txt>
 ```
 
-Ensure your program reads the input as specified and prints exactly $V^2$ integers in the required order.
+确保您的程序按指定格式读取输入，并按要求的顺序精确打印$V^2$个整数。
 
 ---
 
-## Hint: Blocked Floyd–Warshall Algorithm
-Let $B$ be the block size. The $V \times V$ distance matrix is divided into $\lceil V/B \rceil \times \lceil V/B \rceil$ square tiles of size $B \times B$.
+## 提示：分块Floyd-Warshall算法
+设$B$为块大小。$V \times V$距离矩阵被划分为$\lceil V/B \rceil \times \lceil V/B \rceil$个大小为$B \times B$的方形瓦片。
 
-For each block index $k$ (from $0$ to $\lceil V/B \rceil - 1$):
+对于每个块索引$k$（从$0$到$\lceil V/B \rceil - 1$）：
 
-1. **Update the pivot block** $(k,k)$ — compute shortest paths within the pivot block considering vertices inside it as intermediates.
-2. **Update pivot row and pivot column blocks** — update distances in the same row or column as the pivot using newly computed pivot distances.
-3. **Update remaining blocks** $(i,j)$ — for all $i \ne k$ and $j \ne k$, update:
+1. **更新主块**$(k,k)$ — 计算主块内的最短路径，将块内顶点作为中间点
+2. **更新主行和主列块** — 使用新计算的主块距离更新同行或同列的块中的距离
+3. **更新剩余块**$(i,j)$ — 对于所有$i \ne k$和$j \ne k$，更新：
 
 $$
 D_{i,j} \leftarrow \min\!\bigl(D_{i,j},\ D_{i,k} + D_{k,j}\bigr)
 $$
 
-Here $D_{i,k}$ and $D_{k,j}$ come from the updated pivot row/column tiles.
+这里$D_{i,k}$和$D_{k,j}$来自更新后的主行/列瓦片。
 
-This blocking reduces cache misses by reusing submatrices multiple times before moving on, improving performance compared to the naïve Floyd–Warshall algorithm.
+这种分块通过在移动之前多次重用子矩阵来减少缓存未命中，相比朴素Floyd-Warshall算法提高了性能。
 
 ---

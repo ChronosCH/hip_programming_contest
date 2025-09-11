@@ -1,38 +1,38 @@
-# Prefix Sum
+# 前缀和 (Prefix Sum)
 
-## Description
+## 题目描述
 
-Your task is to implement a GPU-accelerated program that computes the **prefix sum** of an array of integers efficiently.
-The program should take an input array of integers—potentially containing millions or even hundreds of millions of elements—and produce an output array where each element is the sum of all preceding values up to that position.
+您的任务是实现一个GPU加速程序，高效计算整数数组的**前缀和**。
+程序应接受一个整数数组输入——可能包含数百万甚至数亿个元素——并产生一个输出数组，其中每个元素是到该位置为止所有前面值的和。
 
-## Requirements
+## 要求
 
-* The `solve` function signature must remain unchanged.
-* Only a **single-GPU** implementation is allowed (no multi-GPU).
+* `solve`函数签名必须保持不变
+* 只允许**单GPU**实现（不允许多GPU）
 
-## Code Structure
+## 代码结构
 
 ```
 .
-├── main.cpp        # Reads input, calls solve(), prints result
-├── kernel.hip      # GPU kernels + solve() implementation
-├── main.h          # Shared includes + solve() declaration
+├── main.cpp        # 读取输入，调用solve()，打印结果
+├── kernel.hip      # GPU内核 + solve()实现
+├── main.h          # 共享头文件 + solve()声明
 ├── Makefile   
 ├── README.md
-└── testcases       # Sample testcases for local verification
+└── testcases       # 本地验证用样例测试用例
 ```
 
-## Build & Run
+## 构建和运行
 
-### Build
+### 构建
 
 ```bash
 make
 ```
 
-Produces executable: `prefix_sum`.
+生成可执行文件：`prefix_sum`。
 
-### Run
+### 运行
 
 ```bash
 ./prefix_sum input.txt
@@ -40,51 +40,51 @@ Produces executable: `prefix_sum`.
 
 ---
 
-## Testcases
+## 测试用例
 
-The `testcases/` folder contains **10** sample input files and output files.
+`testcases/`文件夹包含**10个**样例输入文件和输出文件。
 
-You may run them as:
+您可以这样运行：
 
 ```bash
 ./prefix_sum testcases/1.in
 ```
 
-Hidden testcases will be used during grading, so ensure your solution handles large inputs and edge cases.
+评分时将使用隐藏测试用例，因此请确保您的解决方案能处理大输入和边界情况。
 
 ---
 
-### Input Format
+### 输入格式
 
-* The first line contains a single integer $N$, the length of the array.
-* The second line contains $N$ space-separated integers representing the array values.
+* 第一行包含单个整数$N$，数组的长度
+* 第二行包含$N$个空格分隔的整数，表示数组值
 
-**Example**
+**示例**
 
 ```
 5
 1 2 3 4 5
 ```
 
-**Constraints**
+**约束条件**
 
 * $1 \le N \le 1{,}000{,}000{,}000$
 * $-1000 \le \text{input}[i] \le 1000$
 
 ---
 
-### Output Format
+### 输出格式
 
-* Output $N$ space-separated integers representing the prefix sums in order.
-* Use an **inclusive scan**:
+* 输出$N$个空格分隔的整数，按顺序表示前缀和
+* 使用**包含扫描**：
 
 $$
 S[i] = \sum_{j=0}^{i} A[j]
 $$
 
-* End the output with a newline character.
+* 以换行符结束输出
 
-**Example**
+**示例**
 
 ```
 1 3 6 10 15
@@ -92,17 +92,17 @@ $$
 
 ---
 
-## Submission
+## 提交
 
-Your submitted folder must named `prefix_sum`:
+您提交的文件夹必须命名为`prefix_sum`：
 
-Contain all required source files (`main.cpp`, `kernel.hip`, `main.h`, `Makefile`) so that it can be built directly with:
+包含所有必需的源文件（`main.cpp`, `kernel.hip`, `main.h`, `Makefile`），以便可以直接用以下命令构建：
 
 ```bash
 make
 ```
 
-The grader should be able to:
+评分器应该能够：
 
 ```bash
 cd $HOME/hip_programming_contest/prefix_sum
@@ -112,32 +112,32 @@ make
 
 ---
 
-## Hint: Blocked Prefix Sum Algorithm
+## 提示：分块前缀和算法
 
-Given an input array $A[0 \dots n-1]$, the prefix sum problem computes an output array $S[0 \dots n-1]$ where:
+给定输入数组$A[0 \dots n-1]$，前缀和问题计算输出数组$S[0 \dots n-1]$，其中：
 
 $$
-S[i] = \sum_{j=0}^{i} A[j] \quad \text{(inclusive scan)}
+S[i] = \sum_{j=0}^{i} A[j] \quad \text{（包含扫描）}
 $$
 
-or, for the exclusive form:
+或者，对于排他形式：
 
 $$
 S[i] = \sum_{j=0}^{i-1} A[j]
 $$
 
-A **blocked** (or tiled) prefix sum algorithm partitions the input array into $M$ blocks, each containing $B$ consecutive elements (the **blocking factor**). The algorithm proceeds in three main phases:
+**分块**（或平铺）前缀和算法将输入数组划分为$M$个块，每个块包含$B$个连续元素（**分块因子**）。算法分三个主要阶段进行：
 
-1. **Local scan within each block**
-   Each block $k$ independently computes the prefix sum of its elements (using shared memory), producing a *local scan*.
-   The total sum of block $k$ (the last element of its local scan) is written to $\text{blockSums}[k]$.
-   This step is fully parallel across blocks.
+1. **每个块内的局部扫描**
+   每个块$k$独立计算其元素的前缀和（使用共享内存），产生*局部扫描*。
+   块$k$的总和（其局部扫描的最后一个元素）写入$\text{blockSums}[k]$。
+   此步骤在块之间完全并行。
 
-2. **Scan of block sums**
-   The $\text{blockSums}$ array is scanned to produce $\text{blockOffsets}$, where $\text{blockOffsets}[k]$ is the total sum of all elements in preceding blocks $0 \dots k-1$.
-   This is typically an **exclusive** scan.
+2. **块和的扫描**
+   对$\text{blockSums}$数组进行扫描以产生$\text{blockOffsets}$，其中$\text{blockOffsets}[k]$是前面块$0 \dots k-1$中所有元素的总和。
+   这通常是**排他扫描**。
 
-3. **Offset addition to local results**
-   For each block $k$, all elements in its local scan are incremented by $\text{blockOffsets}[k]$ to form the final global prefix sums.
+3. **向局部结果添加偏移**
+   对于每个块$k$，其局部扫描中的所有元素都增加$\text{blockOffsets}[k]$以形成最终的全局前缀和。
 
 ---

@@ -1,15 +1,15 @@
-# Softmax
+# Softmax 函数计算
 
-## Description
+## 题目描述
 
-Implement a GPU program that computes the **softmax** of a 1-D array of floating-point numbers.
-Given an input vector $\mathbf{x} = [x_1, x_2, \dots, x_N]$, produce $\mathbf{y} = [y_1, y_2, \dots, y_N]$ where:
+实现一个GPU程序，计算一维浮点数数组的**softmax**函数。
+给定输入向量$\mathbf{x} = [x_1, x_2, \dots, x_N]$，产生$\mathbf{y} = [y_1, y_2, \dots, y_N]$，其中：
 
 $$
 y_i = \frac{e^{x_i}}{\sum_{j=1}^{N} e^{x_j}}
 $$
 
-Because naive exponentiation can overflow/underflow, you **must** use the numerically stable form:
+由于朴素指数计算可能溢出/下溢，您**必须**使用数值稳定形式：
 
 $$
 m = \max_i x_i, \quad
@@ -18,35 +18,35 @@ S = \sum_{i=1}^{N} t_i, \quad
 y_i = \frac{t_i}{S}
 $$
 
-## Requirements
+## 要求
 
-* The `solve` function signature must remain unchanged.
-* Use the numerically stable formulation above.
-* Only a **single-GPU** implementation is allowed (no multi-GPU).
+* `solve`函数签名必须保持不变
+* 使用上述数值稳定公式
+* 只允许**单GPU**实现（不允许多GPU）
 
-## Code Structure
+## 代码结构
 
 ```
 .
-├── main.cpp        # Reads input, calls solve(), prints result
-├── kernel.hip      # GPU kernels + solve() implementation
-├── main.h          # Shared includes + solve() declaration
+├── main.cpp        # 读取输入，调用solve()，打印结果
+├── kernel.hip      # GPU内核 + solve()实现
+├── main.h          # 共享头文件 + solve()声明
 ├── Makefile
 ├── README.md
-└── testcases       # Sample testcases for local verification
+└── testcases       # 本地验证用样例测试用例
 ```
 
-## Build & Run
+## 构建和运行
 
-### Build
+### 构建
 
 ```bash
 make
 ```
 
-Produces executable: `softmax`.
+生成可执行文件：`softmax`。
 
-### Run
+### 运行
 
 ```bash
 ./softmax input.txt
@@ -54,50 +54,50 @@ Produces executable: `softmax`.
 
 ---
 
-## Testcases
+## 测试用例
 
-The `testcases/` folder contains **10** sample input files and corresponding outputs.
+`testcases/`文件夹包含**10个**样例输入文件和对应的输出。
 
-Run a sample as:
+运行样例：
 
 ```bash
 ./softmax testcases/1.in
 ```
 
-Tolerances:
+容差：
 
-* Absolute tolerance: $1\times 10^{-6}$
-* Relative tolerance: $1\times 10^{-5}$
-* Minimum denominator: $1\times 10^{-12}$
+* 绝对容差：$1\times 10^{-6}$
+* 相对容差：$1\times 10^{-5}$
+* 最小分母：$1\times 10^{-12}$
 
 ---
 
-### Input Format
+### 输入格式
 
-* The first line contains a single integer $N$, the length of the array.
-* The second line contains $N$ floating-point numbers separated by spaces.
+* 第一行包含单个整数$N$，数组的长度
+* 第二行包含$N$个用空格分隔的浮点数
 
-**Example**
+**示例**
 
 ```
 3
 1.0 2.0 3.0
 ```
 
-**Constraints**
+**约束条件**
 
 * $1 \le N \le 100{,}000{,}000$
-* $\text{input}[i]$ are floating-point numbers
+* $\text{input}[i]$为浮点数
 
 ---
 
-### Output Format
+### 输出格式
 
-* Output $N$ floating-point numbers representing the **softmax** values $y_1, y_2, \dots, y_N$.
-* Each number should satisfy the given tolerance requirements.
-* Numbers are separated by spaces and followed by a newline.
+* 输出$N$个浮点数，表示**softmax**值$y_1, y_2, \dots, y_N$
+* 每个数字应满足给定的容差要求
+* 数字用空格分隔，后跟换行符
 
-**Example**
+**示例**
 
 ```
 0.090 0.244 0.665
@@ -105,17 +105,17 @@ Tolerances:
 
 ---
 
-## Submission
+## 提交
 
-Your submitted folder must named `softmax`
+您提交的文件夹必须命名为`softmax`
 
-Contain all required source files (`main.cpp`, `kernel.hip`, `main.h`, `Makefile`) so that it can be built directly with:
+包含所有必需的源文件（`main.cpp`, `kernel.hip`, `main.h`, `Makefile`），以便可以直接用以下命令构建：
 
 ```bash
 make
 ```
 
-The grader should be able to:
+评分器应该能够：
 
 ```bash
 cd $HOME/hip_programming_contest/softmax
