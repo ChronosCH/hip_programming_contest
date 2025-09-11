@@ -1,0 +1,215 @@
+# 编译产物
+*.o
+*.obj
+*.exe
+*.out
+*.so
+*.dll
+*.dylib
+*.a
+*.lib
+
+# 可执行文件 (基于项目的目标名称)
+/apsp/apsp
+/prefix_sum/prefix_sum
+/prefix_sum/prefix_sum_serial
+/prefix_sum/prefix_sum_serial_optimized
+/softmax/softmax
+
+# 通用C++编译产物
+a.out
+*.gch
+*.pch
+
+# 调试信息
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# HIP/ROCm 相关临时文件
+*.hsaco
+*.o.dlink
+
+# IDE 和编辑器文件
+.vscode/
+.idea/
+.eclipse/
+.settings/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+*.swn
+.vimrc
+.viminfo
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# 缓存文件
+*.cache
+.cache/
+
+# 系统和用户配置目录
+.vscode-server/
+.dotnet/
+.ssh/
+.git/
+.npm/
+.node_modules/
+node_modules/
+
+# 各种配置文件
+.wget-hsts
+.bash_history
+.lesshst
+.viminfo
+.gitconfig
+.profile
+.bashrc
+.bash_logout
+
+# 用户配置目录
+.config/
+.local/
+.gnupg/
+
+# 测试和输出文件
+*_output.txt
+*_output_*.txt
+output_*.txt
+temp_output.txt
+test_output.txt
+expected_*.txt
+test*.out
+large_test_*.in
+large_test_*.out
+*.myout
+
+# 大文件 (超过GitHub 100MB限制)
+*.large
+*_large.*
+*/output_7.txt
+*/output_8.txt
+apsp/output_7.txt
+apsp/output_8.txt
+
+# 其他可能的大文件模式
+*.bin
+*.data
+*.dump
+
+# 性能分析文件
+*.prof
+*.trace
+
+# 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Slurm 作业输出文件 (基于项目中的sbatch文件)
+slurm-*.out
+*.out.*
+
+# Python 缓存文件 (基于项目中的verify.py)
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# 编译器生成的汇编文件
+*.s
+*.asm
+
+# 链接器映射文件
+*.map
+
+# Core dumps
+core
+core.*
+
+# 数据集和测试文件（但保留testcases中的输入文件）
+large_test_*.in
+large_test_*.out
+*.dataset
+dataset/
+data/
+
+# 其他可能的输出文件
+output/
+build/
+dist/
+results/
+
+# 测试覆盖率文件
+coverage/
+*.gcov
+*.gcda
+*.gcno
+
+# 包管理器文件
+package-lock.json
+yarn.lock
+Pipfile.lock
+
+# 环境文件
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# 文档生成
+docs/_build/
+site/
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+
+# 其他系统和应用文件
+.Trash/
+.Spotlight-V100/
+.fseventsd/
+.DocumentRevisions-V100/
+.TemporaryItems/
+Network Trash Folder/
+Temporary Items/
+.apdisk
