@@ -122,6 +122,16 @@ large_test_*.out
 apsp/output_7.txt
 apsp/output_8.txt
 
+# 专门防护大测试文件
+*/large_tests/
+**/large_tests/
+*M_random.in
+*M_random.out
+*MB_*.in
+*MB_*.out
+*GB_*.in
+*GB_*.out
+
 # 其他可能的大文件模式
 *.bin
 *.data
